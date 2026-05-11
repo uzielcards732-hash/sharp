@@ -37,16 +37,23 @@ Single source of truth for project-level decisions. Update when something change
 
 - **SSE** (`text/event-stream`) per spec. Not ND-JSON.
 
-## Parlay parsing
+## Parlay parsing (locked Phase 3)
 
-- Sharp system prompt MUST emit a structured tail block after the prose:
+- Sharp system prompt emits a structured tail block after the prose:
   ```
   ---SHARP_META---
-  {"confidence": 7, "recommendation_type": "parlay" | "no_play" | "monitor", "legs": [...], "kill_conditions": [...], "estimated_payout": "+285"}
+  { ...json... }
   ---END_SHARP_META---
   ```
-- Parser strips the block, validates with Zod, writes structured fields to `parlays`.
-- Final schema finalized when the system prompt is pasted in.
+- `recommendation_type`: `"play"` | `"no_play"` (discriminated union — NOT "parlay"/"monitor")
+- **play** shape: `{ recommendation_type: "play", confidence: 1–10, legs: [...], kill_conditions: [...], estimated_payout: string }`
+  - `legs`: min 1, max 3. Each leg: `{ player, market, line, price, book }`
+  - `estimated_payout`: American odds string, e.g. `"+285"` (not a decimal multiplier)
+  - `kill_conditions`: 2–4 strings
+- **no_play** shape: `{ recommendation_type: "no_play", confidence: 1–10, reasoning: string (min 20 chars) }`
+- Zod discriminated union in `lib/schemas/sharp-meta.ts` (`PlayMetaSchema` / `NoPlayMetaSchema`)
+- Prose and meta separated at `META_OPEN` marker during stream; prose emitted token-by-token, meta held back
+- Parlay row only written for `play` type; `no_play` writes analyses row only
 
 ## Stripe
 

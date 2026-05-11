@@ -11,8 +11,8 @@ const ServerEnv = z.object({
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
   SUPABASE_SECRET_KEY: z.string().min(1),
 
-  // Anthropic (Phase 3)
-  ANTHROPIC_API_KEY: z.string().optional(),
+  // Anthropic (required from Phase 3)
+  ANTHROPIC_API_KEY: z.string().min(1),
 
   // Sports data (Phase 4)
   ODDS_API_KEY: z.string().optional(),
