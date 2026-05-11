@@ -2,16 +2,14 @@ import { z } from "zod";
 
 /**
  * Server-only env. Imported from server components and route handlers.
- * Phase 1 keeps everything optional so the app boots without secrets;
- * later phases will tighten required fields per route that needs them.
  */
 const ServerEnv = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
-  // Supabase (Phase 2)
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().optional(),
-  SUPABASE_SECRET_KEY: z.string().optional(),
+  // Supabase (required from Phase 2)
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
+  SUPABASE_SECRET_KEY: z.string().min(1),
 
   // Anthropic (Phase 3)
   ANTHROPIC_API_KEY: z.string().optional(),
