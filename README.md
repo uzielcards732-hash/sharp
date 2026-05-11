@@ -25,7 +25,7 @@ pnpm dev
 ## Phase Status
 
 - [x] **Phase 1** — ✅ Complete (local verification, Vercel deploy deferred to Phase 2). Skeleton: Next 15 + Tailwind v3.4 + shadcn-compatible scaffolding, env scaffold.
-- [ ] **Phase 2** — Auth + DB: Supabase setup, schema migration, magic-link login, protected routes
+- [x] **Phase 2** — ✅ Complete. Supabase auth + DB: profiles/parlays/affiliate_clicks schema, RLS, magic-link login, protected routes, dashboard stub.
 - [ ] **Phase 3** — Core analysis loop: `/api/analyze` with mock data, Claude streaming, parlay card
 - [ ] **Phase 4** — Real data: BallDontLie + Odds API wired with caching
 - [ ] **Phase 5** — Monetization: Stripe Checkout + webhook + paywall + affiliate redirects
